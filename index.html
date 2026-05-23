@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Tailored Reference</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* ==========================================================================
+       SEUS TOKENS DE CORES E CONFIGURAÇÕES
+       ========================================================================== */
+    :root {
+      /* Paleta Roxa Identificada */
+      --primary: oklch(0.205 0 0); 
+      --primary-hover: #5539c4;
+      --primary-foreground: oklch(0.985 0 0);
+
+      --secondary: oklch(0.97 0 0); 
+      --secondary-hover: #E3DDFF;
+      --secondary-foreground: oklch(0.205 0 0);
+
+      /* Tons de Texto e Bordas Minimalistas */
+      --dark-title: #1B1464; 
+      --muted: oklch(0.556 0 0); 
+      --muted-light: #f1f5f9; 
+      --border: oklch(0.922 0 0); 
+
+      /* Estrutura de Componentes */
+      --card-bg: #ffffff;
+      --modal-bg: #ffffff;
+      --drawer-bg: #ffffff;
+      --form-bg: #ffffff;
+      --tab-bg: #ffffff;
+      --background: oklch(0.985 0 0); /* Cinza ultra-leve para destacar os cards brancos */
+      --foreground: oklch(0.145 0 0);
+      
+      --radius: 0.625rem;
+    }
+
+    /* Suporte Automático a Dark Mode */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --primary: #7C62E9;
+        --primary-hover: #6C4DE6;
+        --primary-foreground: #ffffff;
+
+        --secondary: #1E1B4B;
+        --secondary-hover: #2E2A75;
+        --secondary-foreground: #A5B4FC;
+
+        --dark-title: #E0E7FF;
+        --muted: #A1A1AA;
+        --muted-light: #27272A;
+        --border: #27272A;
+
+        --card-bg: #18181b;
+        --modal-bg: #18181b;
+        --drawer-bg: #18181b;
+        --form-bg: #18181b;
+        --tab-bg: #18181b;
+        --background: oklch(0.145 0 0);
+        --foreground: oklch(0.985 0 0);
+      }
+    }
+
+    /* ==========================================================================
+       SUAS CLASSES DE BASE & COMPONENTES 
+       ========================================================================== */
+    body {
+      background-color: var(--background);
+      color: var(--foreground);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      letter-spacing: -0.01em;
+    }
+
+    /* --- BOTÕES UNIVERSAIS --- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      font-size: 0.875rem; 
+      padding: 0.5rem 1.25rem;
+      border-radius: 9999px; /* Formato pílula */
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      border: 1px solid transparent;
+      user-select: none;
+    }
+
+    .btn:active {
+      transform: scale(0.97); 
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background-color: var(--secondary);
+      color: var(--secondary-foreground);
+    }
+    .btn-secondary:hover {
+      background-color: var(--secondary-hover);
+    }
+
+    /* --- ESTRUTURAS DE FUNDO CLEAN --- */
+    .ui-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02); 
+    }
+
+    /* Inputs de formulário idênticos à imagem */
+    .ui-input {
+      width: 100%;
+      background-color: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      padding: 0.5rem 0;
+      color: var(--foreground);
+      transition: border-color 0.2s ease;
+    }
+    .ui-input:focus {
+      outline: none;
+      border-bottom-color: var(--primary);
+    }
+    .ui-input::placeholder {
+      color: var(--muted);
+      opacity: 0.7;
+    }
+
+    /* --- ÍCONES E TÍTULOS --- */
+    .title-purple {
+      color: var(--dark-title);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .icon-purple {
+      color: var(--primary);
+      fill: currentColor;
+    }
+
+    /* Customização específica da Sidebar Arredondada da imagem */
+    .custom-sidebar {
+      background-color: var(--card-bg);
+      border-right: 1px solid var(--border);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      border-radius: 0 44px 44px 0;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex">
+
+  <aside class="w-72 custom-sidebar flex flex-col justify-between p-6 my-4 ml-0 shadow-sm z-10">
+    <div>
+      <div class="px-4 py-3 mb-8">
+        <h1 class="text-3xl font-bold tracking-tight title-purple">LOGO</h1>
+      </div>
+
+      <nav class="space-y-3">
+        
+        <a href="#" class="flex items-center gap-4 px-4 py-3.5 rounded-xl border-2 flex-row" style="border-color: var(--primary); background-color: var(--secondary);">
+          <span class="w-5 h-5 rounded border-2 block flex-shrink-0" style="border-color: var(--primary);"></span>
+          <span class="h-1.5 w-28 rounded-full" style="background-color: var(--primary);"></span>
+        </a>
+
+        <a href="#" class="flex items-center gap-4 px-4 py-3.5 rounded-xl opacity-75 hover:opacity-100 transition-all">
+          <span class="w-5 h-5 rounded border-2 block flex-shrink-0" style="border-color: var(--border);"></span>
+          <span class="h-1.5 w-24 rounded-full" style="background-color: var(--border);"></span>
+        </a>
+
+        <a href="#" class="flex items-center gap-4 px-4 py-3.5 rounded-xl opacity-75 hover:opacity-100 transition-all">
+          <span class="w-5 h-5 rounded border-2 block flex-shrink-0" style="border-color: var(--border);"></span>
+          <span class="h-1.5 w-32 rounded-full" style="background-color: var(--border);"></span>
+        </a>
+
+        <a href="#" class="flex items-center gap-4 px-4 py-3.5 rounded-xl opacity-75 hover:opacity-100 transition-all">
+          <span class="w-5 h-5 rounded border-2 block flex-shrink-0" style="border-color: var(--border);"></span>
+          <span class="h-1.5 w-20 rounded-full" style="background-color: var(--border);"></span>
+        </a>
+
+        <a href="#" class="flex items-center gap-4 px-4 py-3.5 rounded-xl opacity-75 hover:opacity-100 transition-all">
+          <span class="w-5 h-5 rounded border-2 block flex-shrink-0" style="border-color: var(--border);"></span>
+          <span class="h-1.5 w-26 rounded-full" style="background-color: var(--border);"></span>
+        </a>
+
+      </nav>
+    </div>
+
+    <div class="px-4 py-2">
+      <a href="#" class="inline-flex items-center gap-2 font-bold text-sm text-rose-400 hover:text-rose-500 transition-colors">
+        <span>[→ Logout</span>
+      </a>
+    </div>
+  </aside>
+
+  <div class="flex-1 flex flex-col p-6 min-w-0">
+    
+    <header class="flex justify-end items-center gap-3 mb-8">
+      
+      <div class="ui-card !py-2.5 !px-5 rounded-full flex items-center justify-center min-w-[80px]">
+        <div class="h-1.5 w-12 rounded-full" style="background-color: var(--border);"></div>
+      </div>
+
+      <div class="ui-card !py-2.5 !px-5 rounded-full flex items-center gap-2">
+        <span class="icon-purple">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/></svg>
+        </span>
+        <div class="h-1.5 w-16 rounded-full" style="background-color: var(--border);"></div>
+      </div>
+
+      <div class="ui-card !py-1.5 !pl-5 !pr-2 rounded-full flex items-center gap-4">
+        <span class="text-xs font-bold tracking-wider" style="color: var(--dark-title)">ABC</span>
+        <div class="w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-bold" style="background-color: var(--secondary); color: var(--primary);">
+          AZ
+        </div>
+      </div>
+
+    </header>
+
+    <main class="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+      
+      <div class="ui-card lg:col-span-2">
+        <h2 class="title-purple text-xl mb-2">Painel de Controle</h2>
+        <p class="text-sm mb-6" style="color: var(--muted)">Camada de dados estruturada com base no seu design system.</p>
+        
+        <div class="h-48 rounded-xl flex items-center justify-center border-2 border-dashed" style="border-color: var(--border);">
+          <span class="text-sm" style="color: var(--muted)">Área de Visualização Principal</span>
+        </div>
+      </div>
+
+      <div class="ui-card flex flex-col gap-5">
+        <h3 class="title-purple text-lg">Entrada de Dados</h3>
+        
+        <div class="space-y-4">
+          <div>
+            <input type="text" placeholder="Digite o título principal" class="ui-input" />
+          </div>
+          <div>
+            <input type="email" placeholder="E-mail de contato" class="ui-input" />
+          </div>
+        </div>
+
+        <div class="pt-2 flex gap-2">
+          <button class="btn btn-primary flex-1">Confirmar</button>
+          <button class="btn btn-secondary">Cancelar</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,400 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Cores de Fundo Globais */ /* Um cinza ultra-leve para o fundo geral (estilo Threads/Meta) para fazer os cards brancos saltarem aos olhos */ /* Preto suave para textos normais */
+
+  /* Paleta Roxa Identificada */
+  --primary: #6f58cc; /* Roxo principal para botões primários, ícones e destaques */
+  --primary-hover: #5539c4;
+  --primary-foreground: oklch(0.985 0 0);
+
+  --secondary: oklch(0.97 0 0); /* Roxo bem claro para botões secundários ou badges */
+  --secondary-hover: #E3DDFF;
+  --secondary-foreground: oklch(0.205 0 0);
+
+  /* Tons de Texto e Bordas Minimalistas */
+  --dark-title: #1B1464; /* O roxo escuro/azul noturno da imagem para títulos principais */
+  --muted: oklch(0.97 0 0); /* O cinza das labels da imagem */
+  --muted-light: #f1f5f9; /* Cinza bem claro para hover de elementos neutros */
+  --border: oklch(0.922 0 0); /* Linha divisória fina e limpa (padrão Meta) */
+
+  /* Estrutura de Componentes (Todos estritamente brancos conforme pedido) */
+  --card-bg: #ffffff;
+  --modal-bg: #ffffff;
+  --drawer-bg: #ffffff;
+  --form-bg: #ffffff;
+  --tab-bg: #ffffff;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+/* Suporte Automático a Dark Mode (Estilo Minimalista Escuro) */
+@media (prefers-color-scheme: dark) {
+  :root {
+
+    --primary: #7C62E9;
+    --primary-hover: #6C4DE6;
+    --primary-foreground: #ffffff;
+
+    --secondary: #1E1B4B;
+    --secondary-hover: #2E2A75;
+    --secondary-foreground: #A5B4FC;
+
+    --dark-title: #E0E7FF;
+    --muted: #A1A1AA;
+    --muted-light: #27272A;
+    --border: #27272A;
+
+    /* No modo escuro, o "branco" vira um cinza-escuro/grafite minimalista profundo */
+    --card-bg: #18181b;
+    --modal-bg: #18181b;
+    --drawer-bg: #18181b;
+    --form-bg: #18181b;
+    --tab-bg: #18181b;
+  }
+}
+
+/* Registro de Tokens no Tailwind v4 */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-dark-title: var(--dark-title);
+  --color-muted: var(--muted);
+  --color-muted-light: var(--muted-light);
+  --color-border: var(--border);
+
+  /* Variáveis de componentes para usar como bg-card, bg-modal, etc. */
+  --color-card: var(--card-bg);
+  --color-modal: var(--modal-bg);
+  --color-drawer: var(--drawer-bg);
+  --color-form: var(--form-bg);
+  --color-tab: var(--tab-bg);
+
+  --font-sans: var(--font-sans);
+
+  --font-heading: var(--font-sans);
+
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-sidebar-border: var(--sidebar-border);
+
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+
+  --color-sidebar-accent: var(--sidebar-accent);
+
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+
+  --color-sidebar-primary: var(--sidebar-primary);
+
+  --color-sidebar-foreground: var(--sidebar-foreground);
+
+  --color-sidebar: var(--sidebar);
+
+  --color-chart-5: var(--chart-5);
+
+  --color-chart-4: var(--chart-4);
+
+  --color-chart-3: var(--chart-3);
+
+  --color-chart-2: var(--chart-2);
+
+  --color-chart-1: var(--chart-1);
+
+  --color-ring: var(--ring);
+
+  --color-input: var(--input);
+
+  --color-destructive: var(--destructive);
+
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-accent: var(--accent);
+
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-popover: var(--popover);
+
+  --color-card-foreground: var(--card-foreground);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+
+  --radius-md: calc(var(--radius) * 0.8);
+
+  --radius-lg: var(--radius);
+
+  --radius-xl: calc(var(--radius) * 1.4);
+
+  --radius-2xl: calc(var(--radius) * 1.8);
+
+  --radius-3xl: calc(var(--radius) * 2.2);
+
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* ==========================================================================
+   ESTILOS DE BASE & COMPONENTES MINIMALISTAS (ESTILO META/THREADS)
+   ========================================================================== */
+
+body {
+  background-color: var(--background);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+}
+
+/* --- BOTÕES UNIVERSAIS --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem; /* 14px, ideal para interfaces limpas */
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px; /* Botões no formato "pílula", idênticos ao Threads/Meta */
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: 1px solid transparent;
+  user-select: none;
+}
+
+.btn:active {
+  transform: scale(0.97); /* Micro-interação premium de clique */
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Variantes dos Botões */
+.btn-primary {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+}
+.btn-secondary:hover {
+  background-color: var(--secondary-hover);
+}
+
+.btn-outline {
+  background-color: transparent;
+  border-color: var(--border);
+  color: var(--foreground);
+}
+.btn-outline:hover {
+  background-color: var(--muted-light);
+  border-color: var(--muted);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--muted);
+}
+.btn-ghost:hover {
+  background-color: var(--muted-light);
+  color: var(--foreground);
+}
+
+/* --- ESTRUTURAS DE FUNDO BRANCO CLEAN --- */
+.ui-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02); /* Sombra quase imperceptível, bem clean */
+}
+
+.ui-modal {
+  background-color: var(--modal-bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+}
+
+.ui-drawer {
+  background-color: var(--drawer-bg);
+  border-left: 1px solid var(--border);
+}
+
+.ui-form {
+  background-color: var(--form-bg);
+}
+
+/* Inputs de formulário idênticos à imagem (Inspirado no print original) */
+.ui-input {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 0;
+  color: var(--foreground);
+  transition: border-color 0.2s ease;
+}
+.ui-input:focus {
+  outline: none;
+  border-bottom-color: var(--primary);
+}
+.ui-input::placeholder {
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+/* --- ÍCONES E TÍTULOS CONFORME SOLICITADO --- */
+.title-purple {
+  color: var(--dark-title);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.icon-purple {
+  color: var(--primary);
+  fill: currentColor;
+}
+
+/* Links secundários discretos abaixo do form */
+.ui-link {
+  color: var(--primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+.ui-link:hover {
+  opacity: 0.8;
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+/* ==========================================================================
+   ESTILIZAÇÃO PREMIUM DE BARRAS DE ROLAGEM
+   ========================================================================== */
+
+@layer base {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--primary);
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--primary-hover);
+  }
+
+  /* ✨ REMOVE AS SETAS NATIVAS QUE ESTÃO VAZANDO */
+  ::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  html, body {
+    overflow-x: hidden;
+  }
+}
+
+/* Utilitário extra caso queira esconder visualmente uma barra mas manter o scroll funcional */
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
