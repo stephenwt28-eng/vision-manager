@@ -31,7 +31,7 @@ function getHomeByRole(role: string): string {
   return "/admin";
 }
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
   let response = NextResponse.next({
@@ -67,10 +67,11 @@ export async function proxy(request: NextRequest) {
   });
 
   // Tipagem do getClaims do Supabase (geralmente retorna any/unknown por padrão se não customizado)
-  const { data: claimsData } = await supabase.auth.getClaims();
+  const { data: { session } } = await supabase.auth.getSession();
+const user = session?.user || null;
 
-  const userId = (claimsData as any)?.claims?.sub || null;
-  const isAuthenticated = Boolean(userId);
+const userId = user?.id || null;
+const isAuthenticated = Boolean(userId);
 
   const protectedAdmin = isAdminRoute(pathname);
   const protectedBalcao = isBalcaoRoute(pathname);
@@ -88,30 +89,29 @@ export async function proxy(request: NextRequest) {
     return response;
   }
 
-  // Forçando o tipo do retorno da query para bater com a interface Usuario
-  const { data: usuario } = await supabase
-    .from("usuarios")
-    .select("id, role, status")
-    .eq("id", userId)
-    .maybeSingle() as { data: Usuario | null };
+  const role = user?.user_metadata?.role || null;
+const status = user?.user_metadata?.status || null;
 
-  if (!usuario || usuario.status !== "ativo") {
-    const loginUrl = request.nextUrl.clone();
-    loginUrl.pathname = "/login";
-    loginUrl.searchParams.set("error", "acesso_bloqueado");
-
-    return NextResponse.redirect(loginUrl);
+if (!user || status !== "ativo") {
+  if (pathname === "/login") {
+    return response;
   }
+  
+  const loginUrl = request.nextUrl.clone();
+  loginUrl.pathname = "/login";
+  loginUrl.searchParams.set("error", "acesso_bloqueado");
+  return NextResponse.redirect(loginUrl);
+}
 
   if (isAuthRoute(pathname)) {
     const redirectUrl = request.nextUrl.clone();
-    redirectUrl.pathname = getHomeByRole(usuario.role);
+    redirectUrl.pathname = role === "balcao" ? "/balcao" : "/admin";
     redirectUrl.search = "";
 
     return NextResponse.redirect(redirectUrl);
   }
 
-  if (protectedAdmin && usuario.role !== "admin") {
+  if (protectedAdmin && role !== "admin") {
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.pathname = "/balcao";
     redirectUrl.search = "";
@@ -119,7 +119,7 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(redirectUrl);
   }
 
-  if (protectedBalcao && usuario.role !== "balcao") {
+  if (protectedBalcao && role !== "balcao") {
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.pathname = "/admin";
     redirectUrl.search = "";

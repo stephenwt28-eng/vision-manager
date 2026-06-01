@@ -1,11 +1,17 @@
 "use client";
 
+import { useEffect } from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { createClient } from '@/lib/supabase/client';
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect") || "/admin";
+  const supabase = createClient();
 
   const [form, setForm] = useState({
     email: "",
@@ -14,6 +20,13 @@ export default function LoginPage() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+  const errorParam = searchParams.get("error");
+  if (errorParam === "acesso_bloqueado") {
+    setError("Sua conta foi desativada. Contate o administrador.");
+  }
+}, [searchParams]);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -24,58 +37,54 @@ export default function LoginPage() {
     }));
   }
 
+  
+
   async function handleSubmit(event) {
-    event.preventDefault();
+  event.preventDefault();
+  setLoading(true);
+  setError("");
 
-    try {
-      setLoading(true);
-      setError("");
+  console.log('Attempting login with:', { email: form.email });
+  
+  const { data, error } = await supabase.auth.signInWithPassword({ 
+    email: form.email, 
+    password: form.password 
+  });
 
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.error || "Não foi possível fazer login.");
-        return;
-      }
-
-      router.replace(data.redirectTo || "/admin");
-      router.refresh();
-    } catch (err) {
-      console.error(err);
-      setError("Erro ao conectar com o servidor.");
-    } finally {
-      setLoading(false);
-    }
+  console.log('Supabase response:', { data, error });
+  
+  if (error) {
+    console.error('Login failed:', error.message);
+    setError(error.message);
+  } else {
+    console.log('Login successful, redirecting to:', redirect);
+    setTimeout(() => {
+    router.push(redirect);
+    }, 500);
   }
+  setLoading(false);
+}
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-zinc-950 px-4">
-      <section className="w-full max-w-md rounded-3xl border border-white/10 bg-white/[0.06] p-8 shadow-2xl backdrop-blur">
+    <main className="min-h-screen flex items-center justify-center bg-background px-4">
+      <section className="w-full max-w-md rounded-lg border border-border bg-card p-8 shadow-2xl">
         <div className="mb-8">
-          <p className="text-sm font-medium text-emerald-400">
+          <p className="text-sm font-medium text-primary">
             VisionManager
           </p>
 
-          <h1 className="mt-2 text-3xl font-bold tracking-tight text-white">
+          <h1 className="mt-2 text-3xl font-bold tracking-tight text-foreground">
             Entrar no sistema
           </h1>
 
-          <p className="mt-2 text-sm text-zinc-400">
+          <p className="mt-2 text-sm text-foreground">
             Acesse o painel administrativo ou o terminal do balcão.
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="mb-2 block text-sm text-zinc-300">
+            <label className="mb-2 block text-sm text-foreground">
               E-mail
             </label>
 
@@ -86,13 +95,13 @@ export default function LoginPage() {
               onChange={handleChange}
               placeholder="voce@otica.com"
               autoComplete="email"
-              className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-emerald-400"
+              className="w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground outline-none transition focus:border-primary"
               required
             />
           </div>
 
           <div>
-            <label className="mb-2 block text-sm text-zinc-300">
+            <label className="mb-2 block text-sm text-foreground">
               Senha
             </label>
 
@@ -103,13 +112,13 @@ export default function LoginPage() {
               onChange={handleChange}
               placeholder="••••••••"
               autoComplete="current-password"
-              className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-emerald-400"
+              className="w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground outline-none transition focus:border-text-primary"
               required
             />
           </div>
 
           {error ? (
-            <div className="rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+            <div className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-300">
               {error}
             </div>
           ) : null}
@@ -117,7 +126,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-2xl bg-emerald-500 px-4 py-3 font-semibold text-zinc-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-60"
+            className="w-full rounded-lg bg-primary px-4 py-3 font-semibold text-primary-foreground transition hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading ? "Entrando..." : "Entrar"}
           </button>
@@ -126,14 +135,14 @@ export default function LoginPage() {
         <div className="mt-6 flex items-center justify-between text-sm">
           <Link
             href="/recovery"
-            className="text-zinc-300 transition hover:text-white"
+            className="text-foreground transition hover:text-foreground"
           >
             Esqueci minha senha
           </Link>
 
           <Link
             href="/signup"
-            className="font-medium text-emerald-400 transition hover:text-emerald-300"
+            className="font-medium text-primary transition hover:text-primary"
           >
             Criar conta
           </Link>

@@ -86,27 +86,27 @@ function RecoveryContent() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-zinc-950 px-4">
-      <section className="w-full max-w-md rounded-3xl border border-white/10 bg-white/[0.06] p-8 shadow-2xl backdrop-blur">
+    <main className="min-h-screen flex items-center justify-center bg-background px-4">
+      <section className="w-full max-w-md rounded-lg border border-border bg-card p-8 shadow-2xl">
         {mode === "request" ? (
           <>
             <div className="mb-8">
-              <p className="text-sm font-medium text-emerald-400">
+              <p className="text-sm font-medium text-primary">
                 Recuperação
               </p>
 
-              <h1 className="mt-2 text-3xl font-bold tracking-tight text-white">
+              <h1 className="mt-2 text-3xl font-bold tracking-tight text-foreground">
                 Esqueci minha senha
               </h1>
 
-              <p className="mt-2 text-sm text-zinc-400">
+              <p className="mt-2 text-sm text-muted-foreground">
                 Informe seu e-mail e enviaremos o link de redefinição.
               </p>
             </div>
 
             <form onSubmit={handleRequestRecovery} className="space-y-5">
               <div>
-                <label className="mb-2 block text-sm text-zinc-300">
+                <label className="mb-2 block text-sm text-foreground">
                   E-mail
                 </label>
 
@@ -115,19 +115,19 @@ function RecoveryContent() {
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                   placeholder="voce@otica.com"
-                  className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-emerald-400"
+                  className="w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground outline-none transition focus:border-primary"
                   required
                 />
               </div>
 
               {error ? (
-                <div className="rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                <div className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-300">
                   {error}
                 </div>
               ) : null}
 
               {message ? (
-                <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300">
+                <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300">
                   {message}
                 </div>
               ) : null}
@@ -135,7 +135,7 @@ function RecoveryContent() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-2xl bg-emerald-500 px-4 py-3 font-semibold text-zinc-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-60"
+                className="w-full rounded-lg bg-primary px-4 py-3 font-semibold text-primary-foreground transition hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {loading ? "Enviando..." : "Enviar recuperação"}
               </button>
@@ -144,22 +144,22 @@ function RecoveryContent() {
         ) : (
           <>
             <div className="mb-8">
-              <p className="text-sm font-medium text-emerald-400">
+              <p className="text-sm font-medium text-primary">
                 Nova senha
               </p>
 
-              <h1 className="mt-2 text-3xl font-bold tracking-tight text-white">
+              <h1 className="mt-2 text-3xl font-bold tracking-tight text-foreground">
                 Redefinir acesso
               </h1>
 
-              <p className="mt-2 text-sm text-zinc-400">
+              <p className="mt-2 text-sm text-muted-foreground">
                 Crie uma nova senha para continuar.
               </p>
             </div>
 
             <form onSubmit={handleUpdatePassword} className="space-y-5">
               <div>
-                <label className="mb-2 block text-sm text-zinc-300">
+                <label className="mb-2 block text-sm text-foreground">
                   Nova senha
                 </label>
 
@@ -173,13 +173,13 @@ function RecoveryContent() {
                     }))
                   }
                   placeholder="Mínimo 8 caracteres"
-                  className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-emerald-400"
+                  className="w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground outline-none transition focus:border-primary"
                   required
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm text-zinc-300">
+                <label className="mb-2 block text-sm text-foreground">
                   Confirmar nova senha
                 </label>
 
@@ -193,13 +193,13 @@ function RecoveryContent() {
                     }))
                   }
                   placeholder="Repita a senha"
-                  className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-emerald-400"
+                  className="w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground outline-none transition focus:border-primary"
                   required
                 />
               </div>
 
               {error ? (
-                <div className="rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                <div className="rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-300">
                   {error}
                 </div>
               ) : null}
@@ -207,7 +207,7 @@ function RecoveryContent() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-2xl bg-emerald-500 px-4 py-3 font-semibold text-zinc-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-60"
+                className="w-full rounded-lg bg-primary px-4 py-3 font-semibold text-primary-foreground transition hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {loading ? "Salvando..." : "Salvar nova senha"}
               </button>
@@ -215,10 +215,10 @@ function RecoveryContent() {
           </>
         )}
 
-        <p className="mt-6 text-center text-sm text-zinc-400">
+        <p className="mt-6 text-center text-sm text-muted-foreground">
           <Link
             href="/login"
-            className="font-medium text-emerald-400 hover:text-emerald-300"
+            className="font-medium text-primary hover:text-primary-hover"
           >
             Voltar para o login
           </Link>

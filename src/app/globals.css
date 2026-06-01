@@ -2,7 +2,11 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@variant dark (&:where(.dark, .dark *));
 
 :root {
   /* Cores de Fundo Globais */ /* Um cinza ultra-leve para o fundo geral (estilo Threads/Meta) para fazer os cards brancos saltarem aos olhos */ /* Preto suave para textos normais */
@@ -56,32 +60,6 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-/* Suporte Automático a Dark Mode (Estilo Minimalista Escuro) */
-@media (prefers-color-scheme: dark) {
-  :root {
-
-    --primary: #7C62E9;
-    --primary-hover: #6C4DE6;
-    --primary-foreground: #ffffff;
-
-    --secondary: #1E1B4B;
-    --secondary-hover: #2E2A75;
-    --secondary-foreground: #A5B4FC;
-
-    --dark-title: #E0E7FF;
-    --muted: #A1A1AA;
-    --muted-light: #27272A;
-    --border: #27272A;
-
-    /* No modo escuro, o "branco" vira um cinza-escuro/grafite minimalista profundo */
-    --card-bg: #18181b;
-    --modal-bg: #18181b;
-    --drawer-bg: #18181b;
-    --form-bg: #18181b;
-    --tab-bg: #18181b;
-  }
-}
-
 /* Registro de Tokens no Tailwind v4 */
 @theme inline {
   --color-background: var(--background);
@@ -107,7 +85,7 @@
   --color-form: var(--form-bg);
   --color-tab: var(--tab-bg);
 
-  --font-sans: var(--font-sans);
+  --font-sans: 'UEFA Supercup', sans-serif;
 
   --font-heading: var(--font-sans);
 

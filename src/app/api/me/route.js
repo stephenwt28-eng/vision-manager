@@ -21,30 +21,16 @@ export async function GET() {
     }
 
     const { data: usuario, error: usuarioError } = await supabase
-      .from("usuarios")
-      .select(`
-        id,
-        conta_id,
-        nome_completo,
-        email,
-        image_url,
-        telefone,
-        role,
-        status,
-        ultimo_acesso_em,
-        created_at,
-        conta:contas (
-          id,
-          nome_fantasia,
-          razao_social,
-          cnpj,
-          telefone,
-          email,
-          status
-        )
-      `)
-      .eq("id", user.id)
-      .maybeSingle();
+  .from("user_profiles")
+  .select(`
+    id,
+    email,
+    status,
+    created_at,
+    updated_at
+  `)
+  .eq("id", user.id)
+  .maybeSingle();
 
     if (usuarioError || !usuario) {
       return NextResponse.json(

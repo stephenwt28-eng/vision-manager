@@ -618,11 +618,7 @@ export default function AdminDashboardComponents() {
         throw new Error(payload?.error || "Não foi possível carregar o dashboard.");
       }
 
-      setDashboard({
-        clientes: payload?.data?.clientes ?? [],
-        ordens_servico: payload?.data?.ordens_servico ?? [],
-        vendedores: payload?.data?.vendedores ?? [],
-      });
+      setDashboard(payload?.data ?? {});
     } catch (loadError) {
       setError(loadError.message || "Erro ao carregar o dashboard.");
     } finally {
@@ -802,6 +798,14 @@ export default function AdminDashboardComponents() {
       </div>
     );
   }
+
+  if (!dashboard || loading) {
+  return (
+    <div className="flex min-h-[400px] items-center justify-center">
+      <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+    </div>
+  );
+}
 
   return (
     <div className="space-y-5 sm:space-y-6">

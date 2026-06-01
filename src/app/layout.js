@@ -2,7 +2,7 @@ import { ToastProvider } from '@/contexts/ToastContext';
 import './globals.css'; // O arquivo com o Tailwind v4 e variáveis que criamos
 
 export const metadata = {
-  title: 'Sua Plataforma Clean',
+  title: 'Otica Vision Manager',
   description: 'Design minimalista focado em experiência',
 };
 
