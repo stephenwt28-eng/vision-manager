@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { createClient } from '@/lib/supabase/client';
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect") || "/admin";
@@ -22,48 +21,45 @@ export default function LoginPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-  const errorParam = searchParams.get("error");
-  if (errorParam === "acesso_bloqueado") {
-    setError("Sua conta foi desativada. Contate o administrador.");
-  }
-}, [searchParams]);
+    const errorParam = searchParams.get("error");
+    if (errorParam === "acesso_bloqueado") {
+      setError("Sua conta foi desativada. Contate o administrador.");
+    }
+  }, [searchParams]);
 
   function handleChange(event) {
     const { name, value } = event.target;
-
     setForm((prev) => ({
       ...prev,
       [name]: value,
     }));
   }
 
-  
-
   async function handleSubmit(event) {
-  event.preventDefault();
-  setLoading(true);
-  setError("");
+    event.preventDefault();
+    setLoading(true);
+    setError("");
 
-  console.log('Attempting login with:', { email: form.email });
-  
-  const { data, error } = await supabase.auth.signInWithPassword({ 
-    email: form.email, 
-    password: form.password 
-  });
+    console.log('Attempting login with:', { email: form.email });
+    
+    const { data, error } = await supabase.auth.signInWithPassword({ 
+      email: form.email, 
+      password: form.password 
+    });
 
-  console.log('Supabase response:', { data, error });
-  
-  if (error) {
-    console.error('Login failed:', error.message);
-    setError(error.message);
-  } else {
-    console.log('Login successful, redirecting to:', redirect);
-    setTimeout(() => {
-    router.push(redirect);
-    }, 500);
+    console.log('Supabase response:', { data, error });
+    
+    if (error) {
+      console.error('Login failed:', error.message);
+      setError(error.message);
+    } else {
+      console.log('Login successful, redirecting to:', redirect);
+      setTimeout(() => {
+        router.push(redirect);
+      }, 500);
+    }
+    setLoading(false);
   }
-  setLoading(false);
-}
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-background px-4">
@@ -149,5 +145,13 @@ export default function LoginPage() {
         </div>
       </section>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginContent />
+    </Suspense>
   );
 }
