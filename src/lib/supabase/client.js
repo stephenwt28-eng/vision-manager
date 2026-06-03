@@ -1,4 +1,4 @@
-//src/lib/supabase/client.js
+'use client';
 
 import { createBrowserClient } from "@supabase/ssr";
 
