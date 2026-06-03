@@ -54,9 +54,12 @@ useEffect(() => {
   const data = await response.json();
 
 if (!response.ok) {
-  setError(data.error);
-} else {
+  setError(data.error || "Erro ao fazer login");
+} else if (data.redirectTo) {
   router.push(data.redirectTo);
+} else {
+  console.error("No redirectTo in response:", data);
+  setError("Erro: redirecionamento não configurado");
 }
 setLoading(false);
 }
