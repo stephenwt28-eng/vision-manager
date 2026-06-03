@@ -36,30 +36,27 @@ function LoginContent() {
   }
 
   async function handleSubmit(event) {
-    event.preventDefault();
-    setLoading(true);
-    setError("");
+  event.preventDefault();
+  setLoading(true);
+  setError("");
+
+  const response = await fetch("/api/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email: form.email, password: form.password }),
+  });
+
+  const data = await response.json();
+
+if (!response.ok) {
+  setError(data.error);
+} else {
+  router.push(data.redirectTo);
+}
+setLoading(false);
+}
 
     console.log('Attempting login with:', { email: form.email });
-    
-    const { data, error } = await supabase.auth.signInWithPassword({ 
-      email: form.email, 
-      password: form.password 
-    });
-
-    console.log('Supabase response:', { data, error });
-    
-    if (error) {
-      console.error('Login failed:', error.message);
-      setError(error.message);
-    } else {
-      console.log('Login successful, redirecting to:', redirect);
-      setTimeout(() => {
-        router.push(redirect);
-      }, 500);
-    }
-    setLoading(false);
-  }
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-background px-4">
