@@ -40,8 +40,8 @@ useEffect(() => {
   }
 
   async function handleSubmit(event) {
+    event.preventDefault();
     if (!supabase) return;
-  event.preventDefault();
   setLoading(true);
   setError("");
 
