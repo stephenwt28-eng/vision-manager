@@ -8,9 +8,13 @@ import { createClient } from '@/lib/supabase/client';
 
 function LoginContent() {
   const router = useRouter();
+  const [supabase, setSupabase] = useState(null);
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect") || "/admin";
-  const supabase = createClient();
+
+useEffect(() => {
+  setSupabase(createClient());
+}, []);
 
   const [form, setForm] = useState({
     email: "",
@@ -36,6 +40,7 @@ function LoginContent() {
   }
 
   async function handleSubmit(event) {
+    if (!supabase) return;
   event.preventDefault();
   setLoading(true);
   setError("");
