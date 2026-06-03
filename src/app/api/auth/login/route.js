@@ -18,7 +18,7 @@ export async function POST(request) {
       );
     }
 
-    const supabase = createClient();
+    const supabase = await createClient();
 
     const { data: authData, error: authError } =
       await supabase.auth.signInWithPassword({
@@ -64,11 +64,11 @@ console.log("All user_profiles:", await supabase.from("user_profiles").select("*
     }
 
     await supabase
-      .from("usuarios")
-      .update({
-        ultimo_acesso_em: new Date().toISOString(),
-      })
-      .eq("id", usuario.id);
+  .from("user_profiles")
+  .update({
+    ultimo_acesso_em: new Date().toISOString(),
+  })
+  .eq("id", usuario.id);
 
     return NextResponse.json({
       success: true,
