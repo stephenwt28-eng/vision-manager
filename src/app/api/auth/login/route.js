@@ -18,7 +18,7 @@ export async function POST(request) {
       );
     }
 
-    const supabase = await createClient();
+    const supabase = createClient();
 
     const { data: authData, error: authError } =
       await supabase.auth.signInWithPassword({
@@ -33,21 +33,19 @@ export async function POST(request) {
       );
     }
 
-    const { data: usuario, error: usuarioError } = await supabase
-      .from("usuarios")
-      .select(`
-        id,
-        conta_id,
-        nome_completo,
-        email,
-        telefone,
-        role,
-        status
-      `)
-      .eq("id", authData.user.id)
-      .maybeSingle();
+   console.log("Auth user ID:", authData.user.id, "Type:", typeof authData.user.id);
+
+const { data: usuario, error: usuarioError } = await supabase
+  .from("user_profiles")
+  .select(`id, email, status, role`)
+  .eq("id", authData.user.id)
+  .maybeSingle();
+
+console.log("Query result:", { usuario, usuarioError });
+console.log("All user_profiles:", await supabase.from("user_profiles").select("*"));
 
     if (usuarioError || !usuario) {
+      console.log("User profile not found or error:", usuarioError);
       await supabase.auth.signOut();
 
       return NextResponse.json(
