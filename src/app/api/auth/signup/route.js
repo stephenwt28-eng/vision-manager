@@ -72,6 +72,17 @@ export async function POST(request) {
       );
     }
 
+    if (data.user) {
+  await supabase
+    .from("user_profiles")
+    .insert({
+      id: data.user.id,
+      email: email.trim().toLowerCase(),
+      status: "ativo",
+      role: "admin",
+    });
+}
+
     return NextResponse.json({
       success: true,
       message: data.session
