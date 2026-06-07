@@ -973,58 +973,6 @@ export default function AdminDashboardComponents() {
 
       <section className="grid gap-5 xl:grid-cols-[0.9fr_1.1fr]">
         <SectionCard
-          title="Ranking de vendedores"
-          description="Faturamento no período, ordenado sem diplomacia."
-          action={
-            <Link
-              href="/admin/relatorios"
-              className="inline-flex items-center gap-2 text-sm font-black text-primary hover:opacity-80"
-            >
-              Ver relatório
-              <ArrowRight className="size-4" />
-            </Link>
-          }
-        >
-          {salesRanking.length === 0 ? (
-            <EmptyState
-              title="Ranking ainda vazio"
-              description="Sem vendas neste filtro, ninguém sobe ao pódio."
-            />
-          ) : (
-            <div className="space-y-4">
-              {salesRanking.map((seller) => (
-                <div
-                  key={seller.id}
-                  className="rounded-[26px] border border-border bg-background/75 p-4"
-                >
-                  <div className="flex items-center justify-between gap-4">
-                    <div>
-                      <p className="font-black tracking-[-0.03em] text-dark-title">
-                        {seller.name}
-                      </p>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        {formatCurrency(seller.sold)} · {seller.quantity} OS
-                      </p>
-                    </div>
-
-                    <span className="rounded-full bg-primary/[0.08] px-3 py-1.5 text-xs font-black text-primary">
-                      {Math.round(seller.percent)}%
-                    </span>
-                  </div>
-
-                  <div className="mt-4 h-2.5 overflow-hidden rounded-full bg-card">
-                    <div
-                      className="h-full rounded-full bg-primary"
-                      style={{ width: `${seller.percent}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </SectionCard>
-
-        <SectionCard
           title="Últimas vendas registradas"
           description="Movimento recente dentro do recorte escolhido."
           action={

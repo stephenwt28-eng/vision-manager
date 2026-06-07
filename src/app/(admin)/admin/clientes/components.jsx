@@ -599,11 +599,12 @@ function ClienteFormDialogContent({
       }
     }
 
-    if (formData.cpf) {
-      if (!isValidCPF(formData.cpf)) {
-        nextErrors.cpf = "Informe um CPF válido.";
-      }
-    }
+    //if (formData.cpf) {
+     // if (!isValidCPF(formData.cpf)) {
+     //   nextErrors.cpf = "Informe um CPF válido.";
+     // }
+   // }
+
 
     if (formData.cep) {
       if (!isValidCEP(formData.cep)) {

@@ -21,7 +21,7 @@ export async function GET() {
     }
 
     const { data: usuario, error: usuarioError } = await supabase
-  .from("user_profiles")
+  .from("usuarios")
   .select(`
     id,
     email,

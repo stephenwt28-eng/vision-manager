@@ -52,11 +52,15 @@ export async function POST(request) {
     const supabase = await createClient();
     const origin = request.nextUrl.origin;
 
+    const emailRedirectTo = `${origin}/api/auth/callback?next=${encodeURIComponent(
+      "/login?confirmed=1"
+    )}`;
+
     const { data, error } = await supabase.auth.signUp({
       email: email.trim().toLowerCase(),
       password,
       options: {
-        emailRedirectTo: `${origin}/api/auth/callback?next=/login?confirmed=1`,
+        emailRedirectTo,
         data: {
           nome_fantasia: nomeFantasia.trim(),
           nome_completo: nomeCompleto.trim(),
@@ -71,17 +75,6 @@ export async function POST(request) {
         { status: 400 }
       );
     }
-
-    if (data.user) {
-  await supabase
-    .from("user_profiles")
-    .insert({
-      id: data.user.id,
-      email: email.trim().toLowerCase(),
-      status: "ativo",
-      role: "admin",
-    });
-}
 
     return NextResponse.json({
       success: true,

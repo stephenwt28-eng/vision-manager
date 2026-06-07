@@ -20,7 +20,7 @@ async function getAuthenticatedProfile() {
   }
 
   const { data: profile, error: profileError } = await supabase
-    .from("user_profiles")
+    .from("usuarios")
     .select("id, conta_id, role, status")
     .eq("id", user.id)
     .single();

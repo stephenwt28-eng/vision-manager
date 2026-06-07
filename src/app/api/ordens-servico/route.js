@@ -394,6 +394,9 @@ function prepareMoneyFields(payload = {}, previous = null) {
 function prepareOrdemPayload(body = {}, previous = null) {
   const payload = cleanPayload(body);
 
+  payload.prazo_entrega = payload.prazo_entrega_combinado || payload.prazo_entrega || previous?.prazo_entrega || null;
+  delete payload.prazo_entrega_combinado;
+
   const withMoney = prepareMoneyFields(payload, previous);
   const withStatusDates = applyStatusDates(withMoney, previous);
 
@@ -1032,13 +1035,12 @@ export async function POST(request) {
       }),
 
       insertNestedRecord({
-        supabase,
-        table: "armacoes",
-        contaId: profile.conta_id,
-        clienteId: ordemCriada.cliente_id,
-        osId: ordemCriada.id,
-        payload: armacao,
-      }),
+  supabase,
+  table: "armacoes",
+  contaId: profile.conta_id,
+  osId: ordemCriada.id,
+  payload: armacao,
+}),
 
       insertNestedRecord({
         supabase,
@@ -1203,13 +1205,12 @@ export async function PUT(request) {
         }),
 
         upsertNestedRecord({
-          supabase,
-          table: "armacoes",
-          contaId: profile.conta_id,
-          clienteId: ordemAtualizada.cliente_id,
-          osId: ordemAtualizada.id,
-          payload: armacao,
-        }),
+  supabase,
+  table: "armacoes",
+  contaId: profile.conta_id,
+  osId: ordemAtualizada.id,
+  payload: armacao,
+}),
 
         upsertNestedRecord({
           supabase,

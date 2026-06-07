@@ -1,15 +1,47 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
-function getRedirectByRole(role) {
+function getDefaultRedirectByRole(role) {
   if (role === "balcao") return "/balcao";
   return "/admin";
+}
+
+function isSafeInternalRedirect(value) {
+  if (!value) return false;
+  if (typeof value !== "string") return false;
+  if (!value.startsWith("/")) return false;
+  if (value.startsWith("//")) return false;
+  if (value.startsWith("/api")) return false;
+  if (value.startsWith("/login")) return false;
+  if (value.startsWith("/signup")) return false;
+
+  return true;
+}
+
+function getRedirectTo(role, requestedRedirect) {
+  const defaultRedirect = getDefaultRedirectByRole(role);
+
+  if (!isSafeInternalRedirect(requestedRedirect)) {
+    return defaultRedirect;
+  }
+
+  if (role === "balcao" && !requestedRedirect.startsWith("/balcao")) {
+    return "/balcao";
+  }
+
+  return requestedRedirect;
 }
 
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { email, password } = body;
+
+    const {
+      email,
+      password,
+      redirect,
+    } = body;
 
     if (!email?.trim() || !password) {
       return NextResponse.json(
@@ -33,19 +65,31 @@ export async function POST(request) {
       );
     }
 
-   console.log("Auth user ID:", authData.user.id, "Type:", typeof authData.user.id);
+    const adminSupabase = createAdminClient();
 
-const { data: usuario, error: usuarioError } = await supabase
-  .from("user_profiles")
-  .select(`id, email, status, role`)
-  .eq("id", authData.user.id)
-  .maybeSingle();
-
-console.log("Query result:", { usuario, usuarioError });
-console.log("All user_profiles:", await supabase.from("user_profiles").select("*"));
+    const { data: usuario, error: usuarioError } = await adminSupabase
+      .from("usuarios")
+      .select(`
+        id,
+        conta_id,
+        nome_completo,
+        email,
+        telefone,
+        role,
+        cargo,
+        status,
+        contas (
+          id,
+          nome_fantasia,
+          status
+        )
+      `)
+      .eq("id", authData.user.id)
+      .maybeSingle();
 
     if (usuarioError || !usuario) {
-      console.log("User profile not found or error:", usuarioError);
+      console.error("LOGIN_USER_PROFILE_ERROR:", usuarioError);
+
       await supabase.auth.signOut();
 
       return NextResponse.json(
@@ -63,17 +107,30 @@ console.log("All user_profiles:", await supabase.from("user_profiles").select("*
       );
     }
 
-    await supabase
-  .from("user_profiles")
-  .update({
-    ultimo_acesso_em: new Date().toISOString(),
-  })
-  .eq("id", usuario.id);
+    if (usuario.contas?.status !== "ativa") {
+      await supabase.auth.signOut();
+
+      return NextResponse.json(
+        { error: "A conta da ótica está suspensa ou cancelada." },
+        { status: 403 }
+      );
+    }
+
+    const { error: updateError } = await adminSupabase
+      .from("usuarios")
+      .update({
+        ultimo_acesso_em: new Date().toISOString(),
+      })
+      .eq("id", usuario.id);
+
+    if (updateError) {
+      console.error("LOGIN_UPDATE_ACCESS_ERROR:", updateError);
+    }
 
     return NextResponse.json({
       success: true,
       user: usuario,
-      redirectTo: getRedirectByRole(usuario.role),
+      redirectTo: getRedirectTo(usuario.role, redirect),
     });
   } catch (error) {
     console.error("LOGIN_ERROR:", error);

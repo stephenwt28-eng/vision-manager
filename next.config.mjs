@@ -1,7 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
   reactCompiler: true,
+  generateBuildId: async () => {
+    return 'stable-build';
+  },
 };
 
 export default nextConfig;

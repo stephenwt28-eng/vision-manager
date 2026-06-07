@@ -1,5 +1,3 @@
-//src/lib/supabase/server.js
-
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
@@ -35,7 +33,7 @@ export async function createClient() {
           });
         } catch {
           // Pode acontecer quando chamado dentro de Server Components.
-          // A renovação da sessão deve ser cuidada pelo proxy/middleware.
+          // A renovação da sessão deve ser cuidada pelo middleware/proxy.
         }
       },
     },

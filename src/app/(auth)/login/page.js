@@ -1,20 +1,14 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
-import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { createClient } from '@/lib/supabase/client';
 
 function LoginContent() {
   const router = useRouter();
-  const [supabase, setSupabase] = useState(null);
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect") || "/admin";
 
-useEffect(() => {
-  setSupabase(createClient());
-}, []);
+  const redirect = searchParams.get("redirect") || "";
 
   const [form, setForm] = useState({
     email: "",
@@ -26,13 +20,21 @@ useEffect(() => {
 
   useEffect(() => {
     const errorParam = searchParams.get("error");
+    const confirmedParam = searchParams.get("confirmed");
+
     if (errorParam === "acesso_bloqueado") {
       setError("Sua conta foi desativada. Contate o administrador.");
+      return;
+    }
+
+    if (confirmedParam === "1") {
+      setError("");
     }
   }, [searchParams]);
 
   function handleChange(event) {
     const { name, value } = event.target;
+
     setForm((prev) => ({
       ...prev,
       [name]: value,
@@ -41,51 +43,63 @@ useEffect(() => {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    if (!supabase) return;
-  setLoading(true);
-  setError("");
 
-  const response = await fetch("/api/auth/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email: form.email, password: form.password }),
-  });
+    setLoading(true);
+    setError("");
 
-  const data = await response.json();
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: form.email,
+          password: form.password,
+          redirect,
+        }),
+      });
 
-if (!response.ok) {
-  setError(data.error || "Erro ao fazer login");
-} else if (data.redirectTo) {
-  router.push(data.redirectTo);
-} else {
-  console.error("No redirectTo in response:", data);
-  setError("Erro: redirecionamento não configurado");
-}
-setLoading(false);
-}
+      const data = await response.json();
 
-    console.log('Attempting login with:', { email: form.email });
+      if (!response.ok) {
+        setError(data.error || "Erro ao fazer login.");
+        return;
+      }
+
+      if (!data.redirectTo) {
+        setError("Erro: redirecionamento não configurado.");
+        return;
+      }
+
+      router.push(data.redirectTo);
+      router.refresh();
+    } catch (error) {
+      console.error("LOGIN_PAGE_ERROR:", error);
+      setError("Erro inesperado ao fazer login. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-background px-4">
       <section className="w-full max-w-md rounded-lg border border-border bg-card p-8 shadow-2xl">
         <div className="mb-8">
-          <p className="text-sm font-medium text-primary">
-            VisionManager
-          </p>
+          <p className="text-sm font-medium text-primary">VisionManager</p>
 
           <h1 className="mt-2 text-3xl font-bold tracking-tight text-foreground">
             Entrar no sistema
           </h1>
 
-          <p className="mt-2 text-sm text-foreground">
+          <p className="mt-2 text-sm text-muted-foreground">
             Acesse o painel administrativo ou o terminal do balcão.
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="mb-2 block text-sm text-foreground">
+            <label className="mb-2 block text-sm font-medium text-foreground">
               E-mail
             </label>
 
@@ -102,7 +116,7 @@ setLoading(false);
           </div>
 
           <div>
-            <label className="mb-2 block text-sm text-foreground">
+            <label className="mb-2 block text-sm font-medium text-foreground">
               Senha
             </label>
 
@@ -113,7 +127,7 @@ setLoading(false);
               onChange={handleChange}
               placeholder="••••••••"
               autoComplete="current-password"
-              className="w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground outline-none transition focus:border-text-primary"
+              className="w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground outline-none transition focus:border-primary"
               required
             />
           </div>
@@ -136,7 +150,7 @@ setLoading(false);
         <div className="mt-6 flex items-center justify-between text-sm">
           <Link
             href="/recovery"
-            className="text-foreground transition hover:text-foreground"
+            className="text-muted-foreground transition hover:text-foreground"
           >
             Esqueci minha senha
           </Link>
@@ -155,7 +169,7 @@ setLoading(false);
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div>Carregando...</div>}>
       <LoginContent />
     </Suspense>
   );

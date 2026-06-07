@@ -20,10 +20,12 @@ export async function GET() {
     }
 
     const { data: usuario, error: usuarioError } = await supabase
-  .from("user_profiles")
+  .from("usuarios")
   .select("*")
   .eq("id", user.id)
   .single();
+
+  console.log('DEBUG usuarioError:', usuarioError, 'usuario:', usuario, 'user.id:', user.id);
 
     if (usuarioError || !usuario) {
       return NextResponse.json(
@@ -54,7 +56,7 @@ export async function GET() {
 
     const contaId = usuario.conta_id;
 
-        const clientesData = await supabase.from("clients").select("*").limit(100);
+        const clientesData = await supabase.from("clientes").select("*").limit(100);
     if (clientesData.error) throw clientesData.error;
 
     return NextResponse.json({
