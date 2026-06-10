@@ -18,9 +18,11 @@ export default function SiteHeader() {
     <header className="fixed left-3 right-3 top-3 z-40 sm:left-4 sm:right-4 sm:top-4">
       <div className="mx-auto flex h-[88px] w-full max-w-[1480px] items-center justify-between gap-4 rounded-[34px] border border-border bg-card/92 px-4 shadow-[0_28px_80px_-42px_rgba(15,23,42,0.40)] backdrop-blur-xl sm:px-5">
         <Link href="/" className="flex min-w-0 items-center gap-3">
-          <div className="grid size-12 shrink-0 place-items-center rounded-[20px] bg-primary text-sm font-black text-primary-foreground shadow-[0_18px_36px_-24px_rgba(108,77,230,0.95)]">
-            VM
-          </div>
+          <img 
+  src="/Logo_Red.png" 
+  alt="VM logo" 
+  className="size-12 shrink-0 rounded-[20px] shadow-[0_18px_36px_-24px_rgba(108,77,230,0.95)]"
+/>
           <div className="min-w-0">
             <p className="truncate text-sm font-black tracking-[-0.04em] text-dark-title sm:text-base">
               Vision Manager
