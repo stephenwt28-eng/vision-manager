@@ -316,13 +316,12 @@ export default function SiteHomePage() {
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
-                href="http://wa.me/5532999786332"
-                target="_blank"
-                className="inline-flex h-[58px] items-center justify-center gap-2 rounded-full bg-primary px-6 text-sm font-black text-primary-foreground shadow-[0_24px_50px_-32px_rgba(108,77,230,0.95)] transition hover:-translate-y-0.5 hover:bg-primary-hover"
-              >
-                Solicitar demonstração
-                <ArrowRight className="size-4" />
-              </Link>
+  href="/83972SIGNUP2309"
+  className="inline-flex h-[58px] items-center justify-center gap-2 rounded-full bg-primary px-6 text-sm font-black text-primary-foreground shadow-[0_24px_50px_-32px_rgba(108,77,230,0.95)] transition hover:-translate-y-0.5 hover:bg-primary-hover"
+>
+  Solicitar demonstração
+  <ArrowRight className="size-4" />
+</Link>
 
               <Link
                 href="#problemas"

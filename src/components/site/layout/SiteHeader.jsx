@@ -92,14 +92,12 @@ export default function SiteHeader() {
             </Link>
 
             <Link
-              href="https://wa.me/5532999786331"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-12 items-center gap-2 rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground shadow-[0_18px_40px_-26px_rgba(108,77,230,0.95)] transition hover:-translate-y-0.5 hover:bg-primary-hover"
-            >
-              Demonstração
-              <ArrowRight className="size-4" />
-            </Link>
+  href="/83972SIGNUP2309"
+  className="inline-flex h-12 items-center gap-2 rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground shadow-[0_18px_40px_-26px_rgba(108,77,230,0.95)] transition hover:-translate-y-0.5 hover:bg-primary-hover"
+>
+  Demonstração
+  <ArrowRight className="size-4" />
+</Link>
           </div>
         </div>
       </div>
