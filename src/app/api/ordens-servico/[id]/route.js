@@ -726,6 +726,14 @@ const NESTED_TABLE_CONFIG = {
       "custo",
       "observacoes",
     ],
+    booleanFields: [
+      "tratamento_antirreflexo",
+      "tratamento_filtro_azul",
+      "tratamento_fotossensivel",
+      "tratamento_polarizado",
+      "tratamento_uv",
+      "tratamento_risco",
+    ],
   },
 };
 
@@ -754,6 +762,12 @@ function buildNestedRecordPayload({
   const filtered = pickAllowedFields(clean, config.allowedFields);
 
   delete filtered.id;
+
+  for (const field of config.booleanFields || []) {
+    if (Object.prototype.hasOwnProperty.call(filtered, field)) {
+      filtered[field] = filtered[field] === "Sim" || filtered[field] === true;
+    }
+  }
 
   const payload = {
     ...filtered,

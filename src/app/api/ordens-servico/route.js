@@ -727,6 +727,14 @@ const NESTED_TABLE_CONFIG = {
   lentes: {
     useClienteId: false,
     useOsId: true,
+    booleanFields: [
+      "tratamento_antirreflexo",
+      "tratamento_filtro_azul",
+      "tratamento_fotossensivel",
+      "tratamento_polarizado",
+      "tratamento_uv",
+      "tratamento_risco",
+    ],
   },
 };
 
@@ -747,6 +755,12 @@ function buildNestedRecordPayload({
     ...clean,
     conta_id: contaId,
   };
+
+  for (const field of config.booleanFields || []) {
+    if (Object.prototype.hasOwnProperty.call(payload, field)) {
+      payload[field] = payload[field] === "Sim" || payload[field] === true;
+    }
+  }
 
   if (config.useClienteId) {
     payload.cliente_id = clienteId;

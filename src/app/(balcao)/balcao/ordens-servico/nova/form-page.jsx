@@ -2635,9 +2635,9 @@ export function BalcaoOrdemServicoFormPage({
                   onChange={(value) => updateLente("custo", value)}
                 />
 
-                <InputField
+                <CheckField
                   label="Antirreflexo"
-                  value={lenteData.tratamento_antirreflexo}
+                  checked={lenteData.tratamento_antirreflexo}
                   onChange={(value) =>
                     updateLente("tratamento_antirreflexo", value)
                   }
